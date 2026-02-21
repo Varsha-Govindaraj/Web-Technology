@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    form {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      width: 350px;
+      transition: transform 0.3s ease;
+    }
+    form:hover {
+      transform: scale(1.02);
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #333;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      transition: border-color 0.3s ease;
+    }
+    input:focus {
+      border-color: #74ebd5;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #74ebd5;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #4bb3a7;
+      color: #fff;
+    }
+    .hidden {
+      display: none;
+    }
+    .error {
+      color: red;
+      font-size: 12px;
+      margin-top: -12px;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+  <form id="signup-form">
+    <h2 style="text-align:center; color:#4bb3a7;">Sign Up</h2>
+    
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    
+    <label for="dob">Date of Birth:</label>
+    <input type="date" id="dob" name="dob" required>
+    
+    <div id="age-range" class="hidden">
+      <label for="age">Age:</label>
+      <input type="range" id="age" name="age" min="18" max="100">
+    </div>
+    
+    <div id="email-group" class="hidden">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    
+    <div id="website-group" class="hidden">
+      <label for="website">Website:</label>
+      <input type="url" id="website" name="website">
+    </div>
+    
+    <button type="submit">Sign Up</button>
+  </form>
+
+  <script>
+    const ageRange = document.getElementById("age-range");
+    const emailGroup = document.getElementById("email-group");
+    const websiteGroup = document.getElementById("website-group");
+    const dobInput = document.getElementById("dob");
+
+    dobInput.addEventListener("change", function() {
+      const age = calculateAge(this.value);
+      if (age < 18) {
+        ageRange.classList.add("hidden");
+        emailGroup.classList.add("hidden");
+        websiteGroup.classList.add("hidden");
+      } else if (age >= 18 && age <= 25) {
+        ageRange.classList.remove("hidden");
+        emailGroup.classList.remove("hidden");
+        websiteGroup.classList.add("hidden");
+      } else {
+        ageRange.classList.remove("hidden");
+        emailGroup.classList.remove("hidden");
+        websiteGroup.classList.remove("hidden");
+      }
+    });
+
+    // Inline validation
+    document.querySelectorAll("input[required]").forEach(input => {
+      input.addEventListener("invalid", function() {
+        this.setCustomValidity("Please fill out this field.");
+      });
+      input.addEventListener("input", function() {
+        this.setCustomValidity("");
+      });
+    });
+
+    // Helper function to calculate age
+    function calculateAge(birthday) {
+      const today = new Date();
+      const birthDate = new Date(birthday);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    }
+  </script>
+</body>
+</html>
